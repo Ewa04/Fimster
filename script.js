@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const qrReader = new Html5Qrcode("qr-reader");
   const status = document.getElementById("status");
   const playerContainer = document.getElementById("player-container");
   const player = document.getElementById("player");
