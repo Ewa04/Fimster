@@ -66,3 +66,8 @@ document.addEventListener("DOMContentLoaded", function () {
   // Start de camera automatisch bij het laden van de pagina
   startCamera();
 });
+
+document.getElementById("restart-scan").addEventListener("click", function () {
+  playerContainer.style.display = "none";
+  qrReader.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 });
+});
