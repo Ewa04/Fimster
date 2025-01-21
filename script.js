@@ -3,24 +3,30 @@ document.addEventListener("DOMContentLoaded", function () {
   const status = document.getElementById("status");
   const playerContainer = document.getElementById("player-container");
   const player = document.getElementById("player");
+  const startScanButton = document.getElementById("start-scan");
 
-  // Vraag toestemming voor de camera
-  function startCamera() {
+  // Start de QR-scanner wanneer op de knop wordt geklikt
+  startScanButton.addEventListener("click", function () {
     navigator.mediaDevices
       .getUserMedia({ video: true })
       .then(() => {
         console.log("Camera-toegang toegestaan.");
         startQrScanner();
+        startScanButton.style.display = "none"; // Verberg de knop na starten
+        status.textContent = "Houd een QR-code voor de camera.";
       })
       .catch((err) => {
         console.error("Camera-toegang geweigerd:", err);
         status.textContent =
           "Toegang tot de camera is vereist om de QR-scanner te gebruiken.";
       });
-  }
+  });
 
   // Start de QR-scanner
   function startQrScanner() {
+    const qrReaderDiv = document.getElementById("qr-reader");
+    qrReaderDiv.style.display = "block";
+
     qrReader.start(
       { facingMode: "environment" }, // Gebruik de camera aan de achterkant
       { fps: 10, qrbox: 250 },
@@ -62,12 +68,4 @@ document.addEventListener("DOMContentLoaded", function () {
     const match = url.match(regex);
     return match ? match[1] : null;
   }
-
-  // Start de camera automatisch bij het laden van de pagina
-  startCamera();
-});
-
-document.getElementById("restart-scan").addEventListener("click", function () {
-  playerContainer.style.display = "none";
-  qrReader.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 });
 });
