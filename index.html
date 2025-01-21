@@ -1,23 +1,20 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QR YouTube Audio</title>
+  <title>QR Scanner met YouTube Audio</title>
+  <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>QR YouTube Audio</h1>
-    <div id="qr-reader"></div>
-    <p id="status">Scan een QR-code met een YouTube-link</p>
-    <div id="player-container" style="display: none;">
-      <p>Audio wordt afgespeeld...</p>
-      <iframe id="player" allow="autoplay" frameborder="0"></iframe>
-    </div>
-    <button id="restart-scan" style="display: none;">Opnieuw scannen</button>
+  <h1>QR Scanner voor YouTube Audio</h1>
+  <p id="status">Klik op de knop hieronder om te starten met scannen.</p>
+  <button id="start-scan">Start QR Scanner</button>
+  <div id="qr-reader" style="width: 300px; height: 300px; display: none;"></div>
+  <div id="player-container" style="display: none;">
+    <iframe id="player" frameborder="0" allow="autoplay" style="visibility: hidden;"></iframe>
   </div>
-  <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
