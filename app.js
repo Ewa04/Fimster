@@ -224,13 +224,15 @@ function onPlayerStateChange(event) {
         document.getElementById('video-title').textContent = videoData.title;
         var duration = player.getDuration();
         document.getElementById('video-duration').textContent = formatDuration(duration);
-        // Autoplay is always enabled
-        document.getElementById('startstop-video').innerHTML = "Stop";
-        if (document.getElementById('randomplayback').checked == true) {
-            playVideoAtRandomStartTime();
-        }
-        else {
+        // Check for Autoplay
+        if (document.getElementById('autoplay').checked == true) {
+            document.getElementById('startstop-video').innerHTML = "Stop";
+            if (document.getElementById('randomplayback').checked == true) {
+                playVideoAtRandomStartTime();
+            }
+            else {
             player.playVideo();
+            }
         }
     }
     else if (event.data == YT.PlayerState.PLAYING) {
@@ -345,8 +347,23 @@ document.getElementById('cancelScanButton').addEventListener('click', function()
     document.getElementById('cancelScanButton').style.display = 'none'; // Hide the cancel-button
 });
 
+document.getElementById('cb_settings').addEventListener('click', function() {
+    var cb = document.getElementById('cb_settings');
+    if (cb.checked == true) {
+        document.getElementById('settings_div').style.display = 'block';
+    }
+    else {
+        document.getElementById('settings_div').style.display = 'none';
+    }
+});
+
 document.getElementById('randomplayback').addEventListener('click', function() {
     document.cookie = "RandomPlaybackChecked=" + this.checked + ";max-age=2592000"; //30 Tage
+    listCookies();
+});
+
+document.getElementById('autoplay').addEventListener('click', function() {
+    document.cookie = "autoplayChecked=" + this.checked + ";max-age=2592000"; //30 Tage
     listCookies();
 });
 
@@ -378,6 +395,10 @@ function getCookies() {
     if (getCookieValue("RandomPlaybackChecked") != "") {
         isTrueSet = (getCookieValue("RandomPlaybackChecked") === 'true');
         document.getElementById('randomplayback').checked = isTrueSet;
+    }
+    if (getCookieValue("autoplayChecked") != "") {
+        isTrueSet = (getCookieValue("autoplayChecked") === 'true');
+        document.getElementById('autoplay').checked = isTrueSet;  
     }
     listCookies();
 }
