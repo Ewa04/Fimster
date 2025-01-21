@@ -9,10 +9,26 @@
     <link rel="stylesheet" href="style.css">
     <meta name=viewport content="width=device-width, initial-scale=1">
 
+    <!-- Allow web app to be run in full-screen mode -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <!-- iOS icons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="icon-180x180.png">
+    <!-- Android icons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="icon-96x96.png">
+
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <link rel="shortcut icon" sizes="192x192" href="icon-192x192.png">
+
+    <link rel="manifest" href="manifest.json">
+
 </head>
 
 <body>
-    <h2>Fimster</h2>
+    <h1>Fimster 19</h1>
 
     <div id="qr-reader">
         <button id="cancelScanButton" class="button">Anuleer Scan</button>
@@ -26,8 +42,6 @@
     <div id="videoid">Video ID: <span id="video-id"></span></div>
     <div id="videotitle">Video Title: <span id="video-title"></span></div>
     <div id="videoduration">Video Duration: <span id="video-duration"></span></div>
-
-    <hr />
     <br/>
     <br/>
     <!-- <p id="list"></p> -->
