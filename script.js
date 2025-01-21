@@ -4,6 +4,44 @@ document.addEventListener("DOMContentLoaded", function () {
   const playerContainer = document.getElementById("player-container");
   const player = document.getElementById("player");
   const startScanButton = document.getElementById("start-scan");
+  document.addEventListener("DOMContentLoaded", async function () {
+  try {
+    // Laad de Html5Qrcode library dynamisch
+    const html5QrcodeModule = await import('https://cdn.jsdelivr.net/npm/html5-qrcode/minified/html5-qrcode.min.js');
+    const Html5Qrcode = html5QrcodeModule.Html5Qrcode;
+
+    // Nu kun je Html5Qrcode gebruiken zoals normaal
+    const qrReader = new Html5Qrcode("qr-reader");
+    console.log("Html5Qrcode geladen en klaar om te gebruiken.");
+
+    // De rest van je QR-scanner-code hier
+    const status = document.getElementById("status");
+    const startScanButton = document.getElementById("start-scan");
+
+    startScanButton.addEventListener("click", function () {
+      navigator.mediaDevices
+        .getUserMedia({ video: true })
+        .then(() => {
+          qrReader.start(
+            { facingMode: "environment" },
+            { fps: 10, qrbox: 250 },
+            (decodedText) => {
+              qrReader.stop();
+              status.textContent = `QR-code gescand: ${decodedText}`;
+            },
+            (error) => {
+              console.error(error);
+            }
+          );
+        })
+        .catch((err) => {
+          console.error("Camera-toegang geweigerd:", err);
+        });
+    });
+  } catch (err) {
+    console.error("Error bij het laden van Html5Qrcode:", err);
+  }
+});
 
   // Start de QR-scanner wanneer op de knop wordt geklikt
   startScanButton.addEventListener("click", function () {
