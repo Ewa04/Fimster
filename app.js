@@ -195,13 +195,6 @@ function onYouTubeIframeAPIReady() {
     player = new YT.Player('player', {
         height: '0',
         width: '0',
-        playerVars: {
-        modestbranding: 1, // Minimal branding
-        rel: 0,           // Geen gerelateerde video's aan het einde
-        autoplay: 0,      // Geen autoplay
-        iv_load_policy: 3, // Geen annotaties
-        controls: 1       // Alleen controls
-    },
         events: {
             'onReady': onPlayerReady,
             'onStateChange': onPlayerStateChange
@@ -412,19 +405,58 @@ function getCookies() {
 
 window.addEventListener("DOMContentLoaded", getCookies());
 
-const clear = (() => {
-    const defined = v => v !== null && v !== undefined;
-    const timeout = setInterval(() => {
-        const ad = [...document.querySelectorAll('.ad-showing')][0];
-        if (defined(ad)) {
-            const video = document.querySelector('video');
-            if (defined(video)) {
-                video.currentTime = video.duration;
-            }
-        }
-    }, 500);
-    return function() {
-        clearTimeout(timeout);
+// Functie om advertenties te detecteren en over te slaan
+const clearAds = () => {
+    const adOverlay = document.querySelector('.ad-showing, .ytp-ad-module'); // Advertenties selecteren
+    const videoElement = document.querySelector('video'); // Video-element selecteren
+
+    if (adOverlay && videoElement) {
+        console.log('Advertentie gedetecteerd. Sla over...');
+        videoElement.currentTime = videoElement.duration; // Skip direct naar het einde van de video
     }
-})();
-// clear();
+};
+
+// Functie om MutationObserver te gebruiken
+const observeAds = () => {
+    const videoElement = document.querySelector('video');
+
+    if (!videoElement) {
+        console.log('Geen video-element gevonden.');
+        return;
+    }
+
+    // Observer-instantie maken
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            const adOverlay = document.querySelector('.ad-showing, .ytp-ad-module');
+            if (adOverlay) {
+                console.log('Advertentie gedetecteerd via MutationObserver. Sla over...');
+                videoElement.currentTime = videoElement.duration; // Sla advertentie over
+            }
+        });
+    });
+
+    // Observeer wijzigingen in de video-container
+    const playerContainer = document.querySelector('.html5-video-player');
+    if (playerContainer) {
+        observer.observe(playerContainer, { attributes: true, childList: true, subtree: true });
+        console.log('MutationObserver gestart.');
+    } else {
+        console.log('Geen player-container gevonden.');
+    }
+};
+
+// Interval-aanpak om advertenties te detecteren
+const startAdClearInterval = () => {
+    setInterval(clearAds, 500); // Controleer elke halve seconde
+};
+
+// Functie om beide methodes te combineren
+const clearAdsWithBackup = () => {
+    clearAds(); // Gebruik interval-aanpak
+    observeAds(); // Gebruik MutationObserver als back-up
+};
+
+// Start alles bij het laden van de pagina
+window.addEventListener('load', clearAdsWithBackup);
+
