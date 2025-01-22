@@ -195,6 +195,13 @@ function onYouTubeIframeAPIReady() {
     player = new YT.Player('player', {
         height: '0',
         width: '0',
+        playerVars: {
+        modestbranding: 1, // Minimal branding
+        rel: 0,           // Geen gerelateerde video's aan het einde
+        autoplay: 0,      // Geen autoplay
+        iv_load_policy: 3, // Geen annotaties
+        controls: 1       // Alleen controls
+    },
         events: {
             'onReady': onPlayerReady,
             'onStateChange': onPlayerStateChange
